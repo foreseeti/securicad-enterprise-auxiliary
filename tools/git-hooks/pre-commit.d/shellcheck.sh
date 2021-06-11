@@ -12,8 +12,7 @@ echo_changed_scripts() {
 
 check_scripts() {
   echo "Checking $(echo "$changed_scripts" | wc -l) shell scripts"
-  echo "$changed_scripts" | tr "\n" " " | xargs shellcheck
-  echo "$changed_scripts" | tr "\n" "\0" | xargs -0 git add -f
+  echo "$changed_scripts" | tr "\n" "\0" | xargs -0 shellcheck
 }
 
 main() {
