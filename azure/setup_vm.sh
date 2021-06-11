@@ -13,6 +13,8 @@ set -eux
 # Please enter your environment configuration.
 #
 
+### Subscription [necessary]
+
 subscription_id=""
 
 ### Managed identity [necessary]
@@ -90,8 +92,8 @@ setup_rabbitmq() {
   declare -a arr=("guest" "esWorker" "esAPI")
   for user in "${arr[@]}"
   do
-    if rabbitmqctl list_users | grep -q $user; then
-      rabbitmqctl delete_user $user
+    if rabbitmqctl list_users | grep -q "$user"; then
+      rabbitmqctl delete_user "$user"
     fi
   done
   rabbitmqctl add_user esWorker calcESWorker
@@ -99,7 +101,7 @@ setup_rabbitmq() {
 
   confpath="/home/es/bin/enterprise_suite/backend/apps/es/configs/config.json"
   cleanPw=$(jq -r '.rabbit.api.password' "$confpath")
-  rabbitmqctl add_user esAPI $cleanPw
+  rabbitmqctl add_user esAPI "$cleanPw"
 
   # Allow only user to monitor
   rabbitmqctl set_user_tags esAPI monitoring
@@ -113,7 +115,7 @@ set_credentials() {
 
 setup_webserver() {
   metadata=$(curl -H Metadata:true --noproxy "*" "http://169.254.169.254/metadata/instance?api-version=2021-02-01")
-  public_ip=$(echo $metadata | jq -r '.network.interface[].ipv4.ipAddress[].publicIpAddress')
+  public_ip=$(echo "$metadata" | jq -r '.network.interface[].ipv4.ipAddress[].publicIpAddress')
   if [[ $web_security_mode == "http" ]]; then
     sed "s/#replaceme#/$public_ip/g" /home/es/bin/enterprise_suite/installer/nginxUbuntuHttpConf > /etc/nginx/sites-available/default
   else
