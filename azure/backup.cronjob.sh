@@ -27,8 +27,8 @@ mkdir -p $backupdirname
 # shutdown backend to finalize backend writes
 systemctl stop foreseeti-backend
 
-cp $confpath $backupdirname
-cp $dbpath $backupdirname
+cp "$confpath" "$backupdirname"
+cp "$dbpath" "$backupdirname"
 
 cd $backupdirname
 systemctl start foreseeti-backend
@@ -36,9 +36,9 @@ systemctl start foreseeti-backend
 tar -cvzf "$filepath" data.db config.json
 
 az storage blob upload --auth-mode login \
-                       --account-name $storage_account_name \
-                       --container-name $container_name \
-                       --file $filepath \
-                       --name $blobname
+                       --account-name "$storage_account_name" \
+                       --container-name "$container_name" \
+                       --file "$filepath" \
+                       --name "$blobname"
 
-rm -rf $backupdirname
+rm -rf "$backupdirname"

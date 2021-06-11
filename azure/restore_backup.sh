@@ -16,10 +16,10 @@ confpath="/home/es/bin/enterprise_suite/backend/apps/es/configs/config.json"
 filepath="$blobname.tar.gz"
 
 az storage blob download --auth-mode login \
-                       --account-name $storage_account_name \
-                       --container-name $container_name \
-                       --file $filepath \
-                       --name $blobname
+                       --account-name "$storage_account_name" \
+                       --container-name "$container_name" \
+                       --file "$filepath" \
+                       --name "$blobname"
 
 mkdir "$blobname"
 tar -xvzf "$filepath" -C "$blobname"
