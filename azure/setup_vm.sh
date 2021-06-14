@@ -15,6 +15,7 @@ set -eux
 
 ### Subscription [necessary]
 
+# e.g. 00000000-0000-0000-0000-000000000000
 subscription_id=""
 
 ### Managed identity [necessary]
@@ -81,11 +82,11 @@ validate_parameters() {
 
 setup_azure_cli() {
   if [[ -n "$user_assigned_identity_id" ]]; then
-    az login --identity -u $user_assigned_identity_id
+    az login --identity -u "$user_assigned_identity_id"
   else
     az login --identity
   fi
-  az account set -s $subscription_id
+  az account set -s "$subscription_id"
 }
 
 setup_rabbitmq() {
@@ -108,8 +109,8 @@ setup_rabbitmq() {
 }
 
 set_credentials() {
-  admin_name=$(az keyvault secret show --id $admin_username_secret_id | jq -r .value)
-  admin_pass=$(az keyvault secret show --id $admin_password_secret_id | jq -r .value)
+  admin_name=$(az keyvault secret show --id "$admin_username_secret_id" | jq -r .value)
+  admin_pass=$(az keyvault secret show --id "$admin_password_secret_id" | jq -r .value)
   python3 /home/es/bin/enterprise_suite/tools/troubleshooting.py addadmin --username "$admin_name" --password "$admin_pass"
 }
 
@@ -126,12 +127,12 @@ setup_webserver() {
 
 setup_backup_cronjob() {
   backuplogdir="/root/backuplogs"
-  mkdir -p $backuplogdir
+  mkdir -p "$backuplogdir"
   (crontab -l 2>/dev/null; echo "$backup_schedule /root/esbackup.cronjob.sh $storage_account_name $blob_container_name >> $backuplogdir/esbackup.cronlog 2>&1") | crontab -
 }
 
 restore_backup() {
-  /root/esrestore.sh "$storage_account_name" $blob_container_name $backup_blob_name
+  /root/esrestore.sh "$storage_account_name" "$blob_container_name" "$backup_blob_name"
 }
 
 restart_services() {
