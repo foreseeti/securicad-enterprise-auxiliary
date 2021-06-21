@@ -161,7 +161,7 @@ setup_backup_cronjob() {
 
   backuplogdir="/root/backuplogs"
   mkdir -p "$backuplogdir"
-  (crontab -l 2>/dev/null; echo "$backup_schedule /root/esbackup.cronjob.sh $storage_account_name $blob_container_name >> $backuplogdir/esbackup.cronlog 2>&1") | crontab -
+  (crontab -l 2>/dev/null; echo "$backup_schedule /root/esbackup.cronjob.sh \"$storage_account_name\" \"$blob_container_name\" >> $backuplogdir/esbackup.cronlog 2>&1") | crontab -
 }
 
 restore_backup() {
