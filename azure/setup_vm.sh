@@ -124,7 +124,7 @@ setup_rabbitmq() {
 set_credentials() {
   echo "Setting up securiCAD initial admin user"
 
-  admin_name_data=$(az keyvault secret show --id $admin_username_secret_id || echo RETRIEVAL_FAILURE)
+  admin_name_data=$(az keyvault secret show --id "$admin_username_secret_id" || echo RETRIEVAL_FAILURE)
   if [[ "$admin_name_data" == "RETRIEVAL_FAILURE" ]]; then
      admin_name="admin"
      echo "Failed to retrieve admin username from keyvault"
@@ -132,7 +132,7 @@ set_credentials() {
      admin_name=$(echo "$admin_name_data" | jq -r .value)
      echo "Retrieved admin username from keyvault"
   fi
-  admin_pass_data=$(az keyvault secret show --id $admin_password_secret_id || echo RETRIEVAL_FAILURE)
+  admin_pass_data=$(az keyvault secret show --id "$admin_password_secret_id" || echo RETRIEVAL_FAILURE)
   if [[ "$admin_pass_data" == "RETRIEVAL_FAILURE" ]]; then
      admin_pass="admin"
      echo "Failed to retrieve admin password from keyvault"
