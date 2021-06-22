@@ -10,6 +10,6 @@ As it stands, we don’t have a Contributors License Agreement in place, so we c
 
 ## License
 
-Copyright © 2020-2021 [Foreseeti AB](https://foreseeti.com)
+Copyright © 2021 [Foreseeti AB](https://foreseeti.com)
 
 Licensed under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0)
